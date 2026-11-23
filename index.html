@@ -6,15 +6,19 @@
 <title>아이뮤즈 마케팅 성과 (광고 + 자사몰 GA4)</title>
 <style>
 :root{--bg:#f6f8fb;--panel:#fff;--text:#172033;--muted:#72809a;--line:#e6ebf2;--blue:#3f72ff;--teal:#0ea8a0;--radius:14px;--shadow:0 8px 24px rgba(24,39,75,.06);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI","Malgun Gothic",sans-serif}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-size:14px}button,select{font:inherit}
-.wrap{max-width:980px;margin:0 auto;padding:28px 20px 60px}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-size:14px}button,select,input{font:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:26px 20px 60px}
 .top{margin-bottom:16px}
 .eyebrow{font-size:10px;color:var(--blue);font-weight:700;letter-spacing:.08em;text-transform:uppercase}
 .title{font-size:23px;line-height:1.2;letter-spacing:-.03em;margin:6px 0 5px}
 .sub{color:var(--muted);font-size:12.5px}
+.tabs{display:flex;gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:4px;margin-bottom:16px;width:fit-content}
+.tab-btn{border:0;background:transparent;padding:9px 16px;border-radius:9px;color:var(--muted);cursor:pointer;font-weight:650;font-size:13px}
+.tab-btn.active{background:var(--blue);color:#fff}
+.tab-btn.alt.active{background:var(--teal)}
 .filters{display:flex;flex-wrap:wrap;align-items:center;gap:10px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:11px 14px;margin-bottom:14px}
 .filters label{font-size:11px;color:var(--muted);font-weight:650;margin-right:2px}
-.filters select{border:1px solid var(--line);border-radius:8px;padding:6px 9px;background:#fff;color:var(--text)}
+.filters select,.filters input{border:1px solid var(--line);border-radius:8px;padding:6px 9px;background:#fff;color:var(--text)}
 .filter-status{margin-left:auto;color:var(--muted);font-size:11.5px}
 .section-label{display:flex;align-items:center;gap:8px;margin:22px 0 10px}
 .section-label .dot{width:7px;height:7px;border-radius:50%;background:var(--blue)}
@@ -29,7 +33,7 @@
 .kpi-meta{font-size:10.5px;color:var(--muted);margin-top:6px}
 .grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:12px;margin-bottom:12px}
 .panel{padding:15px}
-.panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:12px}
+.panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:12px;flex-wrap:wrap}
 .panel-title{font-weight:750;letter-spacing:-.01em;font-size:13px}
 .panel-sub{font-size:10.5px;color:var(--muted);margin-top:3px}
 .legend{font-size:10.5px;color:var(--muted)}
@@ -38,7 +42,7 @@
 .gridline{stroke:#edf0f5;stroke-width:1}
 .line{fill:none;stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
 .line.blue{stroke:var(--blue)}.line.teal{stroke:var(--teal)}
-.area{fill:url(#areaFill)}
+.area{fill:url(#areaFill)}.area2{fill:url(#areaFill2)}
 .dot-pt{fill:#fff;stroke-width:2}
 .bar-chart{height:180px;display:flex;align-items:end;gap:10px;padding:20px 4px 24px;border-bottom:1px solid var(--line)}
 .bar-col{flex:1;height:100%;display:flex;flex-direction:column;justify-content:end;align-items:center;gap:5px}
@@ -47,11 +51,14 @@
 .bar-value{font-size:9.5px;color:var(--text);font-weight:750;white-space:nowrap;font-variant-numeric:tabular-nums}
 .bar-sub{font-size:9px;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
 .bar-label{font-size:9.5px;color:var(--muted);white-space:nowrap;margin-top:2px}
-.table-panel{padding:15px}
-.table{width:100%;border-collapse:collapse;font-size:11.5px}
-.table th{text-align:left;color:var(--muted);font-size:9.5px;font-weight:700;border-bottom:1px solid var(--line);padding:0 6px 8px}
+.table-panel{padding:15px;overflow:auto}
+.table{width:100%;border-collapse:collapse;font-size:11.5px;min-width:560px}
+.table th{text-align:left;color:var(--muted);font-size:9.5px;font-weight:700;border-bottom:1px solid var(--line);padding:0 6px 8px;cursor:pointer;user-select:none;white-space:nowrap}
+.table th:hover{color:var(--text)}
+.table th.sorted{color:var(--blue)}
+.table th .arrow{font-size:8px;margin-left:2px}
 .table td{padding:9px 6px;border-bottom:1px solid #f0f2f6;font-variant-numeric:tabular-nums}
-.table td:not(:first-child),.table th:not(:first-child){text-align:right}
+.table td:not(:first-child):not(:nth-child(2)),.table th:not(:first-child):not(:nth-child(2)){text-align:right}
 .media-name{font-weight:700}
 .muted-row td{color:var(--muted)}
 .pill{display:inline-flex;align-items:center;padding:3px 7px;border-radius:999px;font-size:9.5px;font-weight:750}
@@ -61,6 +68,11 @@
 .insight.blue{background:#f0f5ff;border:1px solid #d7e2ff;color:#24447e}
 .insight.teal{background:#eafbf9;border:1px solid #c7ece8;color:#0b655f}
 .foot{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:10.5px;margin-top:16px;flex-wrap:wrap}
+.hidden{display:none !important}
+.search-input{min-width:160px}
+.devbars{display:flex;gap:14px;align-items:end;height:150px;padding:10px 4px 20px}
+.devcol{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:end;gap:6px}
+.devbar{width:56%;background:var(--teal);border-radius:5px 5px 2px 2px;min-width:20px}
 @media(max-width:620px){.kpis{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.filter-status{margin-left:0;width:100%}}
 </style>
 </head>
@@ -71,6 +83,12 @@
   <div class="title">아이뮤즈 마케팅 성과 (광고 + 자사몰 GA4)</div>
   <div class="sub">주간 광고 리포트 시트 + GA4(imuz.com 아이뮤즈) 직접 조회 데이터를 함께 봅니다.</div>
 </header>
+<div class="tabs">
+  <button class="tab-btn active" data-tab="media">광고 성과</button>
+  <button class="tab-btn alt" data-tab="ga4">자사몰 GA4</button>
+</div>
+
+<section id="panel-media">
 <section class="filters">
   <label>조회 기간</label>
   <select id="periodSelect">
@@ -84,27 +102,59 @@
 </section>
 
 <div class="section-label"><div class="dot"></div><h2>광고 성과 (네이버 구매완료 기준)</h2></div>
-<section class="kpis" id="adKpis"></section>
+<section class="kpis" id="mediaKpis"></section>
 <section class="grid">
   <article class="card panel"><div class="panel-head"><div><div class="panel-title">일별 광고비 추이</div><div class="panel-sub">VAT 제외 · 전체 매체 합산</div></div><div class="legend" id="spendLegend"></div></div><div class="chart-wrap" id="spendChart"></div></article>
   <article class="card panel"><div class="panel-head"><div><div class="panel-title">주간 구매완료 매출</div><div class="panel-sub">네이버 원금액 기준</div></div></div><div class="bar-chart" id="weekChart"></div></article>
 </section>
 <section class="card table-panel">
-  <div class="panel-head"><div><div class="panel-title">매체별 성과</div><div class="panel-sub" id="tableSub"></div></div><div class="pill blue">구매완료 기준</div></div>
+  <div class="panel-head"><div><div class="panel-title">매체별 성과 (구매완료 기준)</div><div class="panel-sub" id="tableSub"></div></div><div class="pill blue">구매완료 기준</div></div>
   <table class="table"><thead><tr><th>매체</th><th>소진금액</th><th>구매완료</th><th>구매완료 매출</th><th>ROAS</th></tr></thead><tbody id="channelTable"></tbody></table>
 </section>
-<div class="insight blue"><div><strong style="display:block;margin-bottom:3px">광고 인사이트</strong><span id="adInsight"></span></div></div>
 
+<div class="section-label"><div class="dot"></div><h2>캠페인별 상세 (전체 전환 기준, 10/26~11/22)</h2></div>
+<div class="section-note">네이버 11/16~11/22는 일별 합계만 수집되어 캠페인별 분해에서 제외됩니다. 전환·전환매출은 구매완료가 아닌 전체 전환(장바구니 등 포함) 기준입니다.</div>
+<section class="card table-panel">
+  <div class="panel-head">
+    <div><div class="panel-title">캠페인 테이블</div><div class="panel-sub">헤더를 클릭하면 정렬됩니다 · <span id="campCount"></span>개 캠페인</div></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <select id="campMediaFilter"><option value="all">전체 매체</option></select>
+      <input id="campSearch" class="search-input" placeholder="캠페인명 검색">
+    </div>
+  </div>
+  <table class="table" id="campTable">
+    <thead><tr>
+      <th data-key="media">매체</th><th data-key="campaign">캠페인</th><th data-key="spend">소진금액</th><th data-key="impr">노출</th><th data-key="click">클릭</th><th data-key="ctr">CTR</th><th data-key="conv">전환수</th><th data-key="revenue">전환매출</th><th data-key="roas">ROAS</th>
+    </tr></thead>
+    <tbody id="campBody"></tbody>
+  </table>
+</section>
+<div class="insight blue"><div><strong style="display:block;margin-bottom:3px">광고 인사이트</strong><span id="mediaInsight"></span></div></div>
+</section>
+
+<section id="panel-ga4" class="hidden">
 <div class="section-label alt"><div class="dot"></div><h2>자사몰 유입·구매 (GA4 · shop.imuz.com)</h2></div>
-<div class="section-note">네이버 광고 대부분은 네이버 스마트스토어로 연결되어 이 수치에 포함되지 않습니다. 아래는 자사몰(shop.imuz.com) 세션만 집계한 GA4 수치입니다.</div>
+<div class="section-note">네이버 광고 대부분은 네이버 스마트스토어로 연결되어 이 수치에 포함되지 않습니다. 아래는 자사몰(shop.imuz.com) 세션만 집계한 GA4 수치입니다. 기간: 10/26~11/22 (28일).</div>
 <section class="kpis" id="ga4Kpis"></section>
 <section class="grid">
+  <article class="card panel"><div class="panel-head"><div><div class="panel-title">일별 세션·매출 추이</div><div class="panel-sub">GA4 세션수 / 구매 매출</div></div></div><div class="chart-wrap" id="ga4DailyChart"></div></article>
   <article class="card panel"><div class="panel-head"><div><div class="panel-title">주간 세션·구매</div><div class="panel-sub">GA4 세션수 / 구매 매출</div></div></div><div class="bar-chart" id="ga4WeekChart"></div></article>
-  <article class="card panel table-panel" style="padding:15px"><div class="panel-head"><div><div class="panel-title">세션 소스/매체 Top 6</div><div class="panel-sub">10/26~11/22 전체 기간 기준</div></div><div class="pill teal">GA4</div></div>
-    <table class="table"><thead><tr><th>채널</th><th>세션</th><th>구매</th><th>매출</th></tr></thead><tbody id="ga4ChannelTable"></tbody></table>
+</section>
+<section class="grid">
+  <article class="card table-panel">
+    <div class="panel-head"><div><div class="panel-title">세션 소스/매체 전체 (13개)</div><div class="panel-sub">헤더 클릭으로 정렬 · 10/26~11/22 전체 기간</div></div><div class="pill teal">GA4</div></div>
+    <table class="table" id="ga4ChTable">
+      <thead><tr><th data-key="name">채널</th><th data-key="sessions">세션</th><th data-key="purchases">구매</th><th data-key="revenue">매출</th></tr></thead>
+      <tbody id="ga4ChBody"></tbody>
+    </table>
+  </article>
+  <article class="card panel">
+    <div class="panel-head"><div><div class="panel-title">기기별 세션·매출</div><div class="panel-sub">desktop / mobile / tablet</div></div></div>
+    <div class="devbars" id="devBars"></div>
   </article>
 </section>
 <div class="insight teal"><div><strong style="display:block;margin-bottom:3px">자사몰 인사이트</strong><span id="ga4Insight"></span></div></div>
+</section>
 
 <footer class="foot"><span>Source: 주간_광고리포트 시트 + GA4(imuz.com 아이뮤즈, a115114957p396615055)</span><span>생성: 2026.11.23 · 광고비·GA4 합계 교차 검증 완료</span></footer>
 </div>
@@ -122,6 +172,7 @@ const CHANNELS_W4=[
  {name:'네이버 루트웨이',spend:663025,orders:26,revenue:7040600,roas:10.62,known:true},
  {name:'META / GDN / 카카오',spend:null,orders:null,revenue:null,roas:null,known:false}
 ];
+const CAMPAIGNS=[{"media":"네이버 아이뮤즈","campaign":"#01.[ADVoost 쇼핑]_태블릿PC","spend":1873469,"impr":529848,"click":3056,"conv":320,"revenue":72857538},{"media":"네이버 아이뮤즈","campaign":"#00.[카탈로그-스토어]_리타겟팅","spend":1731707,"impr":257204,"click":5508,"conv":388,"revenue":94028250},{"media":"네이버 루트웨이","campaign":"#01.ADVoost 쇼핑-루트웨이","spend":1081152,"impr":396362,"click":1695,"conv":181,"revenue":93391317},{"media":"네이버 아이뮤즈","campaign":"🔥04.쇼핑_세일즈-벌크그룹","spend":922143,"impr":190977,"click":1831,"conv":200,"revenue":25660110},{"media":"네이버 아이뮤즈","campaign":"💡00.쇼핑_브랜드키워드-가격비교","spend":816278,"impr":51569,"click":1919,"conv":349,"revenue":82763455},{"media":"네이버 루트웨이","campaign":"#04.[트래픽]_신규유입_피드-신규소재","spend":732989,"impr":76512,"click":1933,"conv":41,"revenue":21403029},{"media":"네이버 아이뮤즈","campaign":"💥06.쇼핑_태블릿-가격비교","spend":609697,"impr":23173,"click":669,"conv":67,"revenue":14641371},{"media":"네이버 루트웨이","campaign":"#🔵쇼핑_루트웨이-벌크그룹","spend":603723,"impr":40140,"click":1223,"conv":91,"revenue":50749507},{"media":"네이버 아이뮤즈","campaign":"#01.[ADVoost 쇼핑]_roas고효율","spend":559006,"impr":251090,"click":1053,"conv":137,"revenue":29870636},{"media":"네이버 아이뮤즈","campaign":"💥01.PL_태블릿-메인(스토어)_MO","spend":552608,"impr":73526,"click":801,"conv":41,"revenue":8810745},{"media":"네이버 아이뮤즈","campaign":"#06.고객여정-신규소재TEST","spend":530684,"impr":27694,"click":1649,"conv":82,"revenue":18233892},{"media":"네이버 아이뮤즈","campaign":"#06.구매의도-신규소재TEST","spend":523684,"impr":32227,"click":1353,"conv":81,"revenue":21401426},{"media":"네이버 아이뮤즈","campaign":"#04.[전환]_장바구니 리타겟팅","spend":492150,"impr":19260,"click":452,"conv":100,"revenue":32857480},{"media":"카카오 페이지","campaign":"디스플레이_방문_웹툰","spend":485555,"impr":2177713,"click":10432,"conv":0,"revenue":0},{"media":"네이버 루트웨이","campaign":"#🔵쇼핑_루트웨이-파워뱅크","spend":443520,"impr":8794,"click":606,"conv":29,"revenue":15300528},{"media":"네이버 아이뮤즈","campaign":"💥08.쇼핑_태블릿-가격비교MO(평일입찰상향)","spend":433865,"impr":9950,"click":297,"conv":27,"revenue":6290183},{"media":"네이버 아이뮤즈","campaign":"#03.[전환-스토어]_고객여정_피드_신규위너소재TEST","spend":349351,"impr":15369,"click":843,"conv":82,"revenue":18310154},{"media":"카카오 디스플레이","campaign":"카카오 비즈보드_방문","spend":343940,"impr":1352195,"click":3134,"conv":0,"revenue":0},{"media":"네이버 아이뮤즈","campaign":"💥08.쇼핑_태블릿-플러스스토어(평일입찰상향)","spend":320432,"impr":9454,"click":227,"conv":51,"revenue":11387780},{"media":"네이버 아이뮤즈","campaign":"#03.[전환-스토어]_고객여정_피드_기존위너소재","spend":310446,"impr":14474,"click":873,"conv":74,"revenue":17096101},{"media":"네이버 아이뮤즈","campaign":"💥07.쇼핑_태블릿-플러스스토어","spend":305379,"impr":32311,"click":384,"conv":152,"revenue":34203364},{"media":"네이버 아이뮤즈","campaign":"🔥01.쇼핑_세일즈-쇼핑콘텐츠","spend":304667,"impr":50810,"click":560,"conv":46,"revenue":13244274},{"media":"네이버 아이뮤즈","campaign":"[쇼핑프로모션]_알림받기타겟","spend":304597,"impr":35876,"click":522,"conv":14,"revenue":1906091},{"media":"네이버 루트웨이","campaign":"#00.카탈로그-루트웨이","spend":292348,"impr":73575,"click":1323,"conv":68,"revenue":46263180},{"media":"네이버 아이뮤즈","campaign":"💥01.PL_태블릿-메인(스토어)_PC","spend":249817,"impr":28528,"click":379,"conv":27,"revenue":5509455},{"media":"네이버 루트웨이","campaign":"#🔵쇼핑_루트웨이-쇼핑콘텐츠","spend":205642,"impr":168655,"click":759,"conv":46,"revenue":27475029},{"media":"네이버 아이뮤즈","campaign":"#01.[ADVoost 쇼핑]_roas고효율/태블릿 제외","spend":193547,"impr":113523,"click":433,"conv":53,"revenue":8353501},{"media":"네이버 루트웨이","campaign":"✅01.PL_파워뱅크","spend":189660,"impr":27372,"click":447,"conv":25,"revenue":10661590},{"media":"네이버 루트웨이","campaign":"#🔵쇼핑_루트웨이-브랜드키워드","spend":186343,"impr":929016,"click":1597,"conv":165,"revenue":90152716},{"media":"네이버 아이뮤즈","campaign":"#03.[전환]신규유입_타겟확장시도_3059남성(노트북)","spend":184341,"impr":11103,"click":433,"conv":9,"revenue":2722726},{"media":"META","campaign":"261002_A_무상보증_이미지","spend":177315,"impr":15581,"click":408,"conv":0,"revenue":0},{"media":"META","campaign":"260930_A_유튜브20만원_이미지","spend":176333,"impr":21435,"click":252,"conv":2,"revenue":3580000},{"media":"네이버 아이뮤즈","campaign":"💥08.쇼핑_태블릿-가격비교PC(평일입찰상향)","spend":168923,"impr":4292,"click":123,"conv":22,"revenue":5974374},{"media":"네이버 루트웨이","campaign":"✅02.PL_커피메이커","spend":146651,"impr":21714,"click":268,"conv":13,"revenue":1353547},{"media":"META","campaign":"261002_A1_뮤가드","spend":130860,"impr":19493,"click":382,"conv":2,"revenue":1359091},{"media":"META","campaign":"261029_B2B_B_업무연속성_이미지","spend":125876,"impr":14051,"click":114,"conv":1,"revenue":76527},{"media":"META","campaign":"261029_B2B_A_업무연속성_영상","spend":125117,"impr":12601,"click":80,"conv":1,"revenue":12727},{"media":"카카오 디스플레이","campaign":"비즈보드_방문_09.23-10.31","spend":119123,"impr":404417,"click":1028,"conv":0,"revenue":0},{"media":"네이버 아이뮤즈","campaign":"💡00.쇼핑_브랜드키워드-플러스스토어","spend":116760,"impr":11999,"click":635,"conv":290,"revenue":59838811},{"media":"네이버 아이뮤즈","campaign":"💡00.PL_브랜드키워드-제품별(스토어)","spend":116507,"impr":135086,"click":596,"conv":100,"revenue":18319672},{"media":"GDN","campaign":"261028_브랜드02","spend":111818,"impr":119197,"click":5382,"conv":0,"revenue":0},{"media":"META","campaign":"261029_B_유튜브20만원_영상","spend":111222,"impr":13490,"click":205,"conv":1,"revenue":28909},{"media":"META","campaign":"261029_B_무상보증_영상","spend":110748,"impr":9560,"click":239,"conv":0,"revenue":0},{"media":"GDN","campaign":"261028_브랜드01","spend":108190,"impr":83816,"click":4865,"conv":0,"revenue":0},{"media":"META","campaign":"261029_B_뮤가드_선생영상","spend":97519,"impr":9574,"click":75,"conv":0,"revenue":0},{"media":"네이버 루트웨이","campaign":"#🔵쇼핑_루트웨이-커피메이커","spend":97300,"impr":6185,"click":202,"conv":11,"revenue":1125092},{"media":"네이버 아이뮤즈","campaign":"#02.[트래픽-스토어]_고객여정_피드","spend":85054,"impr":5865,"click":391,"conv":9,"revenue":2171636},{"media":"META","campaign":"261008_A2_뮤가드","spend":78812,"impr":11206,"click":44,"conv":0,"revenue":0},{"media":"네이버 루트웨이","campaign":"✅00.PL_브랜드키워드-제품별(스토어)","spend":72188,"impr":6095,"click":324,"conv":29,"revenue":12360964},{"media":"META","campaign":"261102_루트웨이_커피_01","spend":62737,"impr":4745,"click":122,"conv":2,"revenue":59000},{"media":"META","campaign":"261102_루트웨이_점프_02","spend":61904,"impr":3390,"click":54,"conv":2,"revenue":1450636},{"media":"네이버 아이뮤즈","campaign":"🔥02.쇼핑_세일즈-플러스스토어콘텐츠","spend":58103,"impr":19265,"click":77,"conv":26,"revenue":4844119},{"media":"네이버 루트웨이","campaign":"ADVoost 쇼핑 부스트 업","spend":56646,"impr":6269,"click":241,"conv":10,"revenue":664090},{"media":"META","campaign":"261109_A_뮤가드_홍보세로형영상","spend":36241,"impr":2730,"click":15,"conv":0,"revenue":0},{"media":"META","campaign":"261008_goM1_무상보증_구매전환","spend":34598,"impr":4351,"click":29,"conv":1,"revenue":79000},{"media":"META","campaign":"261002_C11pro_B2B","spend":30146,"impr":3791,"click":45,"conv":2,"revenue":6290000},{"media":"META","campaign":"261008_goM1_유튜브20만원_구매전환","spend":28977,"impr":3349,"click":67,"conv":1,"revenue":499091},{"media":"META","campaign":"261008_C11pro_B2B","spend":15417,"impr":1467,"click":45,"conv":0,"revenue":0},{"media":"GDN","campaign":"261012_as_GDN_브랜드홍보","spend":11168,"impr":12159,"click":537,"conv":0,"revenue":0},{"media":"네이버 아이뮤즈","campaign":"💡00.쇼핑브랜드형_브랜드키워드","spend":10920,"impr":13845,"click":36,"conv":13,"revenue":1262728},{"media":"네이버 아이뮤즈","campaign":"🔥05.쇼핑브랜드형_일반키워드","spend":9010,"impr":30216,"click":21,"conv":0,"revenue":0},{"media":"네이버 아이뮤즈","campaign":"🔥01.PL_B2G/B2B 공통(자사몰)","spend":7488,"impr":3049,"click":21,"conv":0,"revenue":0},{"media":"네이버 아이뮤즈","campaign":"🔥03.PL_B2G(자사몰)","spend":7146,"impr":18508,"click":23,"conv":0,"revenue":0},{"media":"네이버 아이뮤즈","campaign":"🔥02.PL_B2B(자사몰)","spend":6674,"impr":9753,"click":19,"conv":1,"revenue":0},{"media":"네이버 루트웨이","campaign":"#🟡쇼핑브랜드형광고","spend":4800,"impr":14142,"click":16,"conv":0,"revenue":0},{"media":"네이버 루트웨이","campaign":"✅03.PL_콘텐츠매체","spend":2786,"impr":2304,"click":7,"conv":1,"revenue":508182},{"media":"네이버 아이뮤즈","campaign":"🔴#01.브랜드검색광고_아이뮤즈","spend":0,"impr":12541,"click":4663,"conv":650,"revenue":111033994},{"media":"네이버 아이뮤즈","campaign":"🔴#02.브랜드검색광고_포유디지탈","spend":0,"impr":1218,"click":501,"conv":51,"revenue":1920482},{"media":"네이버 아이뮤즈","campaign":"#06.구매의도-신규소재TEST_요청사항","spend":0,"impr":0,"click":0,"conv":5,"revenue":365745},{"media":"네이버 아이뮤즈","campaign":"#03.[전환]_신규소재-고객여정","spend":0,"impr":0,"click":0,"conv":3,"revenue":326182},{"media":"네이버 아이뮤즈","campaign":"#03.[전환]신규유입_타겟확장시도_3059남성","spend":0,"impr":0,"click":0,"conv":7,"revenue":2006046},{"media":"네이버 아이뮤즈","campaign":"#06.고객여정-신규소재TEST_요청사항","spend":0,"impr":0,"click":0,"conv":3,"revenue":1313091}];
 const GA4_WEEKS=[
  {id:'w1',sessions:6548,purchases:39,revenue:13732900},
  {id:'w2',sessions:5544,purchases:25,revenue:4411150},
@@ -129,19 +180,28 @@ const GA4_WEEKS=[
  {id:'w4',sessions:5589,purchases:38,revenue:3474160}
 ];
 const GA4_TOTAL={sessions:23875,purchases:134,revenue:28285400};
-const GA4_CHANNELS=[
- {name:'Organic Search',sessions:10379,purchases:44,revenue:10934200},
- {name:'Direct',sessions:6046,purchases:67,revenue:14661250},
- {name:'Display',sessions:4701,purchases:0,revenue:0},
- {name:'Referral',sessions:409,purchases:12,revenue:1901650},
- {name:'Unassigned',sessions:556,purchases:10,revenue:788300},
- {name:'기타(AI Assistant·Paid·Social 등)',sessions:23875-10379-6046-4701-409-556,purchases:134-44-67-0-12-10,revenue:28285400-10934200-14661250-0-1901650-788300}
-];
+const GA4_CHANNELS=[{"name":"Organic Search","sessions":10379,"purchases":44,"revenue":10934200},{"name":"Direct","sessions":6046,"purchases":67,"revenue":14661250},{"name":"Display","sessions":4701,"purchases":0,"revenue":0},{"name":"Unassigned","sessions":556,"purchases":10,"revenue":788300},{"name":"AI Assistant","sessions":503,"purchases":1,"revenue":0},{"name":"Referral","sessions":409,"purchases":12,"revenue":1901650},{"name":"Paid Social","sessions":360,"purchases":0,"revenue":0},{"name":"Organic Shopping","sessions":219,"purchases":0,"revenue":0},{"name":"Paid Search","sessions":181,"purchases":0,"revenue":0},{"name":"Paid Video","sessions":156,"purchases":0,"revenue":0},{"name":"Organic Social","sessions":140,"purchases":0,"revenue":0},{"name":"Cross-network","sessions":132,"purchases":0,"revenue":0},{"name":"Organic Video","sessions":41,"purchases":0,"revenue":0}];
+const GA4_DAILY=[{"date":"10/26","sessions":850,"revenue":3572900},{"date":"10/27","sessions":1170,"revenue":1183900},{"date":"10/28","sessions":920,"revenue":737000},{"date":"10/29","sessions":1296,"revenue":7251700},{"date":"10/30","sessions":928,"revenue":401600},{"date":"10/31","sessions":606,"revenue":579900},{"date":"11/1","sessions":678,"revenue":5900},{"date":"11/2","sessions":932,"revenue":1401500},{"date":"11/3","sessions":939,"revenue":823080},{"date":"11/4","sessions":869,"revenue":257860},{"date":"11/5","sessions":819,"revenue":575610},{"date":"11/6","sessions":757,"revenue":1257900},{"date":"11/7","sessions":592,"revenue":79300},{"date":"11/8","sessions":681,"revenue":15900},{"date":"11/9","sessions":934,"revenue":875850},{"date":"11/10","sessions":893,"revenue":1108780},{"date":"11/11","sessions":922,"revenue":412860},{"date":"11/12","sessions":933,"revenue":1085900},{"date":"11/13","sessions":935,"revenue":504700},{"date":"11/14","sessions":785,"revenue":2055700},{"date":"11/15","sessions":797,"revenue":623400},{"date":"11/16","sessions":908,"revenue":138700},{"date":"11/17","sessions":955,"revenue":1587400},{"date":"11/18","sessions":816,"revenue":670860},{"date":"11/19","sessions":881,"revenue":724700},{"date":"11/20","sessions":845,"revenue":328700},{"date":"11/21","sessions":564,"revenue":23800},{"date":"11/22","sessions":682,"revenue":0}];
+const GA4_DEVICES=[{"name":"desktop","sessions":8636,"revenue":22366900},{"name":"mobile","sessions":14924,"revenue":5908600},{"name":"tablet","sessions":393,"revenue":9900}];
+
 const money=n=>n==null?'확인 불가':new Intl.NumberFormat('ko-KR').format(Math.round(n))+'원';
 const compact=n=>n==null?'확인 불가':n>=100000000?(n/100000000).toFixed(2)+'억':n>=10000?(n/10000).toFixed(0)+'만':new Intl.NumberFormat('ko-KR').format(Math.round(n));
 const num=n=>n==null?'확인 불가':new Intl.NumberFormat('ko-KR').format(Math.round(n));
-const xr=n=>n==null?'확인 불가':n.toFixed(2)+'x';
-const pct2=n=>n==null?'확인 불가':(n*100).toFixed(2)+'%';
+const xr=n=>n==null||!isFinite(n)?'확인 불가':n.toFixed(2)+'x';
+const pct2=n=>n==null||!isFinite(n)?'확인 불가':(n*100).toFixed(2)+'%';
+
+// ---- Tabs ----
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const tab=btn.dataset.tab;
+    document.getElementById('panel-media').classList.toggle('hidden', tab!=='media');
+    document.getElementById('panel-ga4').classList.toggle('hidden', tab!=='ga4');
+  });
+});
+
+// ---- Ad period filter ----
 function selPeriod(){return document.getElementById('periodSelect').value}
 function currentWeek(){return WEEKS.find(w=>w.id===selPeriod())}
 function currentGa4Week(){return GA4_WEEKS.find(w=>w.id===selPeriod())}
@@ -151,22 +211,10 @@ function adKpiForSelection(){
  const w=currentWeek();
  return {spend:w.spend,revenue:w.revenue,roas:w.spend?w.revenue/w.spend:null,orders:w.orders};
 }
-function ga4KpiForSelection(){
- const p=selPeriod();
- if(p==='all')return GA4_TOTAL;
- const w=currentGa4Week();
- return {sessions:w.sessions,purchases:w.purchases,revenue:w.revenue};
-}
 function renderAdKpis(){
  const k=adKpiForSelection();
  const items=[['소진금액',money(k.spend),'VAT 제외'],['구매완료 건수',num(k.orders),'네이버 구매완료 전환'],['구매완료 매출',money(k.revenue),'네이버 원금액 기준'],['구매완료 ROAS',xr(k.roas),'매출 ÷ 소진금액']];
- document.getElementById('adKpis').innerHTML=items.map(a=>'<div class="card kpi"><div class="kpi-label">'+a[0]+'</div><div class="kpi-value">'+a[1]+'</div><div class="kpi-meta">'+a[2]+'</div></div>').join('');
-}
-function renderGa4Kpis(){
- const k=ga4KpiForSelection();
- const conv=k.sessions?k.purchases/k.sessions:null;
- const items=[['세션수(자사몰)',num(k.sessions),'GA4 세션 기준'],['구매(자사몰)',num(k.purchases),'GA4 purchase 이벤트'],['구매 매출(자사몰)',money(k.revenue),'GA4 총수익'],['세션당 구매율',pct2(conv),'구매 ÷ 세션']];
- document.getElementById('ga4Kpis').innerHTML=items.map(a=>'<div class="card kpi"><div class="kpi-label">'+a[0]+'</div><div class="kpi-value">'+a[1]+'</div><div class="kpi-meta">'+a[2]+'</div></div>').join('');
+ document.getElementById('mediaKpis').innerHTML=items.map(a=>'<div class="card kpi"><div class="kpi-label">'+a[0]+'</div><div class="kpi-value">'+a[1]+'</div><div class="kpi-meta">'+a[2]+'</div></div>').join('');
 }
 function renderSpend(){
  const p=selPeriod();
@@ -191,31 +239,117 @@ function renderChannels(){
   document.getElementById('channelTable').innerHTML='<tr class="muted-row"><td colspan="5">선택한 주차의 매체별 분해 데이터는 원자료 재확인 후 반영 예정입니다.</td></tr>';
  }
 }
+function renderInsights(){
+ const p=selPeriod();
+ if(p==='all'){
+  document.getElementById('mediaInsight').textContent='10/26~11/22 전체 구매완료 매출은 '+money(TOTAL.revenue)+'이며, 매출이 가장 컸던 주는 11/2~11/8('+money(83396130)+')입니다.';
+  document.getElementById('ga4Insight').textContent='같은 기간 자사몰(GA4) 세션은 '+num(GA4_TOTAL.sessions)+'회, 구매 '+num(GA4_TOTAL.purchases)+'건, 매출 '+money(GA4_TOTAL.revenue)+'입니다. Direct 채널 매출이 '+money(14661250)+'로 가장 크고, mobile 기기 세션이 '+num(14924)+'회로 가장 많습니다(단, 매출은 desktop이 '+money(22366900)+'로 가장 큼).';
+ }else{
+  const w=currentWeek(),g=currentGa4Week();
+  document.getElementById('mediaInsight').textContent=w.label+' 구매완료 매출은 '+money(w.revenue)+', ROAS '+xr(w.revenue/w.spend)+'입니다.';
+  document.getElementById('ga4Insight').textContent=w.label+' 자사몰 세션 '+num(g.sessions)+'회 중 구매 '+num(g.purchases)+'건, 매출 '+money(g.revenue)+'입니다.';
+ }
+}
+
+// ---- Campaign table (sortable + filterable) ----
+let campSort={key:'spend',dir:'desc'};
+function populateCampMediaFilter(){
+ const medias=[...new Set(CAMPAIGNS.map(c=>c.media))];
+ const sel=document.getElementById('campMediaFilter');
+ medias.forEach(m=>{const o=document.createElement('option');o.value=m;o.textContent=m;sel.appendChild(o);});
+}
+function renderCampTable(){
+ const mediaFilter=document.getElementById('campMediaFilter').value;
+ const search=document.getElementById('campSearch').value.trim().toLowerCase();
+ let rows=CAMPAIGNS.filter(c=>(mediaFilter==='all'||c.media===mediaFilter)&&(!search||c.campaign.toLowerCase().includes(search)));
+ rows=rows.map(c=>({...c,ctr:c.impr?c.click/c.impr:0,roas:c.spend?c.revenue/c.spend:0}));
+ rows.sort((a,b)=>{
+   let av=a[campSort.key],bv=b[campSort.key];
+   if(typeof av==='string'){av=av.toLowerCase();bv=bv.toLowerCase();return campSort.dir==='asc'?av.localeCompare(bv):bv.localeCompare(av);}
+   return campSort.dir==='asc'?av-bv:bv-av;
+ });
+ document.getElementById('campCount').textContent=rows.length;
+ document.getElementById('campBody').innerHTML=rows.map(c=>'<tr><td class="media-name">'+c.media+'</td><td>'+c.campaign+'</td><td>'+money(c.spend)+'</td><td>'+num(c.impr)+'</td><td>'+num(c.click)+'</td><td>'+pct2(c.ctr)+'</td><td>'+num(c.conv)+'</td><td>'+money(c.revenue)+'</td><td>'+xr(c.roas)+'</td></tr>').join('');
+ document.querySelectorAll('#campTable th').forEach(th=>{
+   th.classList.toggle('sorted', th.dataset.key===campSort.key);
+   const base=th.textContent.replace(/[▲▼]\s*$/,'').trim();
+   th.innerHTML=base+(th.dataset.key===campSort.key?'<span class="arrow">'+(campSort.dir==='asc'?'▲':'▼')+'</span>':'');
+ });
+}
+document.querySelectorAll('#campTable th').forEach(th=>{
+ th.addEventListener('click',()=>{
+   const key=th.dataset.key;
+   if(campSort.key===key){campSort.dir=campSort.dir==='asc'?'desc':'asc';}
+   else{campSort={key,dir:(key==='media'||key==='campaign')?'asc':'desc'};}
+   renderCampTable();
+ });
+});
+document.getElementById('campMediaFilter').addEventListener('change',renderCampTable);
+document.getElementById('campSearch').addEventListener('input',renderCampTable);
+
+// ---- GA4 ----
+function renderGa4Kpis(){
+ const p=selPeriod();
+ const k=p==='all'?GA4_TOTAL:(()=>{const w=currentGa4Week();return {sessions:w.sessions,purchases:w.purchases,revenue:w.revenue};})();
+ const conv=k.sessions?k.purchases/k.sessions:null;
+ const items=[['세션수(자사몰)',num(k.sessions),'GA4 세션 기준'],['구매(자사몰)',num(k.purchases),'GA4 purchase 이벤트'],['구매 매출(자사몰)',money(k.revenue),'GA4 총수익'],['세션당 구매율',pct2(conv),'구매 ÷ 세션']];
+ document.getElementById('ga4Kpis').innerHTML=items.map(a=>'<div class="card kpi"><div class="kpi-label">'+a[0]+'</div><div class="kpi-value">'+a[1]+'</div><div class="kpi-meta">'+a[2]+'</div></div>').join('');
+}
+function renderGa4Daily(){
+ const w=640,h=170,pad={l:6,r:6,t:14,b:22};
+ const vals=GA4_DAILY.map(d=>d.sessions),max=Math.max(...vals);
+ const pts=vals.map((v,i)=>{const px=pad.l+(i/(vals.length-1))*(w-pad.l-pad.r);const py=pad.t+(1-v/max)*(h-pad.t-pad.b);return [px,py]});
+ const line=pts.map(a=>a.join(',')).join(' ');
+ const area=line+' '+(w-pad.r)+','+(h-pad.b)+' '+pad.l+','+(h-pad.b);
+ const labels=GA4_DAILY.map(d=>d.date);
+ document.getElementById('ga4DailyChart').innerHTML='<svg viewBox="0 0 '+w+' '+h+'"><defs><linearGradient id="areaFill2" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0ea8a0" stop-opacity=".2"/><stop offset="100%" stop-color="#0ea8a0" stop-opacity="0"/></linearGradient></defs><line class="gridline" x1="6" x2="634" y1="92" y2="92"/><polygon class="area2" points="'+area+'"/><polyline class="line teal" points="'+line+'"/>'+pts.map((a,i)=>'<circle class="dot-pt teal" style="stroke:#0ea8a0" cx="'+a[0]+'" cy="'+a[1]+'" r="2.4"><title>'+labels[i]+' · 세션 '+num(vals[i])+' · 매출 '+money(GA4_DAILY[i].revenue)+'</title></circle>').join('')+labels.map((lab,i)=>{if(i%4!==0&&i!==labels.length-1)return '';return '<text class="axis" x="'+pts[i][0]+'" y="164" text-anchor="middle">'+lab+'</text>'}).join('')+'</svg>';
+}
 function renderGa4Weeks(){
  const max=Math.max(...GA4_WEEKS.map(w=>w.revenue));
  document.getElementById('ga4WeekChart').innerHTML=GA4_WEEKS.map(w=>'<div class="bar-col"><div class="bar-value">'+compact(w.revenue)+'</div><div class="bar-sub">'+num(w.sessions)+'세션·'+num(w.purchases)+'건</div><div class="bar teal" style="height:'+Math.max(6,w.revenue/max*120)+'px"></div><div class="bar-label">'+WEEKS.find(x=>x.id===w.id).label+'</div></div>').join('');
 }
-function renderGa4Channels(){
- document.getElementById('ga4ChannelTable').innerHTML=GA4_CHANNELS.map(c=>'<tr><td class="media-name">'+c.name+'</td><td>'+num(c.sessions)+'</td><td>'+num(c.purchases)+'</td><td>'+money(c.revenue)+'</td></tr>').join('');
+let ga4ChSort={key:'sessions',dir:'desc'};
+function renderGa4ChTable(){
+ let rows=[...GA4_CHANNELS];
+ rows.sort((a,b)=>{
+   let av=a[ga4ChSort.key],bv=b[ga4ChSort.key];
+   if(typeof av==='string'){return ga4ChSort.dir==='asc'?av.localeCompare(bv):bv.localeCompare(av);}
+   return ga4ChSort.dir==='asc'?av-bv:bv-av;
+ });
+ document.getElementById('ga4ChBody').innerHTML=rows.map(c=>'<tr><td class="media-name">'+c.name+'</td><td>'+num(c.sessions)+'</td><td>'+num(c.purchases)+'</td><td>'+money(c.revenue)+'</td></tr>').join('');
+ document.querySelectorAll('#ga4ChTable th').forEach(th=>{
+   th.classList.toggle('sorted', th.dataset.key===ga4ChSort.key);
+   const base=th.textContent.replace(/[▲▼]\s*$/,'').trim();
+   th.innerHTML=base+(th.dataset.key===ga4ChSort.key?'<span class="arrow">'+(ga4ChSort.dir==='asc'?'▲':'▼')+'</span>':'');
+ });
 }
-function renderInsights(){
- const p=selPeriod();
- if(p==='all'){
-  document.getElementById('adInsight').textContent='10/26~11/22 전체 구매완료 매출은 '+money(TOTAL.revenue)+'이며, 매출이 가장 컸던 주는 11/2~11/8('+money(83396130)+')입니다.';
-  document.getElementById('ga4Insight').textContent='같은 기간 자사몰(GA4) 세션은 '+num(GA4_TOTAL.sessions)+'회, 구매 '+num(GA4_TOTAL.purchases)+'건, 매출 '+money(GA4_TOTAL.revenue)+'입니다. Direct 채널 매출이 '+money(14661250)+'로 가장 크고, Organic Search가 세션 '+num(10379)+'회로 가장 많습니다.';
- }else{
-  const w=currentWeek(),g=currentGa4Week();
-  document.getElementById('adInsight').textContent=w.label+' 구매완료 매출은 '+money(w.revenue)+', ROAS '+xr(w.revenue/w.spend)+'입니다.';
-  document.getElementById('ga4Insight').textContent=w.label+' 자사몰 세션 '+num(g.sessions)+'회 중 구매 '+num(g.purchases)+'건, 매출 '+money(g.revenue)+'입니다.';
- }
+document.querySelectorAll('#ga4ChTable th').forEach(th=>{
+ th.addEventListener('click',()=>{
+   const key=th.dataset.key;
+   if(ga4ChSort.key===key){ga4ChSort.dir=ga4ChSort.dir==='asc'?'desc':'asc';}
+   else{ga4ChSort={key,dir:key==='name'?'asc':'desc'};}
+   renderGa4ChTable();
+ });
+});
+function renderDevices(){
+ const max=Math.max(...GA4_DEVICES.map(d=>d.sessions));
+ document.getElementById('devBars').innerHTML=GA4_DEVICES.map(d=>'<div class="devcol"><div class="bar-value">'+num(d.sessions)+'</div><div class="devbar" style="height:'+Math.max(6,d.sessions/max*110)+'px"></div><div class="bar-label">'+d.name+'</div><div class="bar-sub">'+money(d.revenue)+'</div></div>').join('');
 }
-function render(){
+
+function renderAll(){
  renderAdKpis();renderSpend();renderWeeks();renderChannels();
- renderGa4Kpis();renderGa4Weeks();renderGa4Channels();
+ renderGa4Kpis();
  renderInsights();
  document.getElementById('filterStatus').textContent='현재 선택 · '+(selPeriod()==='all'?'전체 · 10/26~11/22':currentWeek().label);
 }
-document.getElementById('periodSelect').addEventListener('change',render);
-render();
+document.getElementById('periodSelect').addEventListener('change',renderAll);
+
+populateCampMediaFilter();
+renderAll();
+renderCampTable();
+renderGa4Daily();
+renderGa4Weeks();
+renderGa4ChTable();
+renderDevices();
 </script>
 </body></html>
