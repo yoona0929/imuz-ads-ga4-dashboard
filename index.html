@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>아이뮤즈 마케팅 성과 (광고 + 자사몰 GA4)</title>
+<style>
+:root{--bg:#f6f8fb;--panel:#fff;--text:#172033;--muted:#72809a;--line:#e6ebf2;--blue:#3f72ff;--teal:#0ea8a0;--radius:14px;--shadow:0 8px 24px rgba(24,39,75,.06);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI","Malgun Gothic",sans-serif}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-size:14px}button,select{font:inherit}
+.wrap{max-width:980px;margin:0 auto;padding:28px 20px 60px}
+.top{margin-bottom:16px}
+.eyebrow{font-size:10px;color:var(--blue);font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.title{font-size:23px;line-height:1.2;letter-spacing:-.03em;margin:6px 0 5px}
+.sub{color:var(--muted);font-size:12.5px}
+.filters{display:flex;flex-wrap:wrap;align-items:center;gap:10px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:11px 14px;margin-bottom:14px}
+.filters label{font-size:11px;color:var(--muted);font-weight:650;margin-right:2px}
+.filters select{border:1px solid var(--line);border-radius:8px;padding:6px 9px;background:#fff;color:var(--text)}
+.filter-status{margin-left:auto;color:var(--muted);font-size:11.5px}
+.section-label{display:flex;align-items:center;gap:8px;margin:22px 0 10px}
+.section-label .dot{width:7px;height:7px;border-radius:50%;background:var(--blue)}
+.section-label.alt .dot{background:var(--teal)}
+.section-label h2{font-size:14px;margin:0;letter-spacing:-.01em}
+.section-note{color:var(--muted);font-size:11.5px;margin:-4px 0 12px 15px}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:14px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+.kpi{padding:14px 14px 12px}
+.kpi-label{color:var(--muted);font-size:10.5px;font-weight:650}
+.kpi-value{font-size:clamp(14px,4vw,19px);font-weight:760;letter-spacing:-.03em;margin-top:8px;font-variant-numeric:tabular-nums;word-break:break-word;line-height:1.2}
+.kpi-meta{font-size:10.5px;color:var(--muted);margin-top:6px}
+.grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:12px;margin-bottom:12px}
+.panel{padding:15px}
+.panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:12px}
+.panel-title{font-weight:750;letter-spacing:-.01em;font-size:13px}
+.panel-sub{font-size:10.5px;color:var(--muted);margin-top:3px}
+.legend{font-size:10.5px;color:var(--muted)}
+.chart-wrap{height:190px}.chart-wrap svg{width:100%;height:100%;overflow:visible}
+.axis{font-size:9px;fill:#98a4b8}
+.gridline{stroke:#edf0f5;stroke-width:1}
+.line{fill:none;stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
+.line.blue{stroke:var(--blue)}.line.teal{stroke:var(--teal)}
+.area{fill:url(#areaFill)}
+.dot-pt{fill:#fff;stroke-width:2}
+.bar-chart{height:180px;display:flex;align-items:end;gap:10px;padding:20px 4px 24px;border-bottom:1px solid var(--line)}
+.bar-col{flex:1;height:100%;display:flex;flex-direction:column;justify-content:end;align-items:center;gap:5px}
+.bar{width:64%;min-width:14px;border-radius:5px 5px 2px 2px}
+.bar.blue{background:var(--blue)}.bar.teal{background:var(--teal)}
+.bar-value{font-size:9.5px;color:var(--text);font-weight:750;white-space:nowrap;font-variant-numeric:tabular-nums}
+.bar-sub{font-size:9px;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.bar-label{font-size:9.5px;color:var(--muted);white-space:nowrap;margin-top:2px}
+.table-panel{padding:15px}
+.table{width:100%;border-collapse:collapse;font-size:11.5px}
+.table th{text-align:left;color:var(--muted);font-size:9.5px;font-weight:700;border-bottom:1px solid var(--line);padding:0 6px 8px}
+.table td{padding:9px 6px;border-bottom:1px solid #f0f2f6;font-variant-numeric:tabular-nums}
+.table td:not(:first-child),.table th:not(:first-child){text-align:right}
+.media-name{font-weight:700}
+.muted-row td{color:var(--muted)}
+.pill{display:inline-flex;align-items:center;padding:3px 7px;border-radius:999px;font-size:9.5px;font-weight:750}
+.pill.blue{background:#e8edff;color:#2f4fd1}
+.pill.teal{background:#e2f7f5;color:#0b7d76}
+.insight{display:flex;gap:10px;padding:13px 15px;border-radius:var(--radius);font-size:11.5px;line-height:1.55;margin-bottom:6px}
+.insight.blue{background:#f0f5ff;border:1px solid #d7e2ff;color:#24447e}
+.insight.teal{background:#eafbf9;border:1px solid #c7ece8;color:#0b655f}
+.foot{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:10.5px;margin-top:16px;flex-wrap:wrap}
+@media(max-width:620px){.kpis{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.filter-status{margin-left:0;width:100%}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <div class="eyebrow">Performance overview</div>
+  <div class="title">아이뮤즈 마케팅 성과 (광고 + 자사몰 GA4)</div>
+  <div class="sub">주간 광고 리포트 시트 + GA4(imuz.com 아이뮤즈) 직접 조회 데이터를 함께 봅니다.</div>
+</header>
+<section class="filters">
+  <label>조회 기간</label>
+  <select id="periodSelect">
+    <option value="all">전체 · 10/26~11/22</option>
+    <option value="w1">10/26~11/1</option>
+    <option value="w2">11/2~11/8</option>
+    <option value="w3">11/9~11/15</option>
+    <option value="w4">11/16~11/22</option>
+  </select>
+  <div class="filter-status" id="filterStatus"></div>
+</section>
+
+<div class="section-label"><div class="dot"></div><h2>광고 성과 (네이버 구매완료 기준)</h2></div>
+<section class="kpis" id="adKpis"></section>
+<section class="grid">
+  <article class="card panel"><div class="panel-head"><div><div class="panel-title">일별 광고비 추이</div><div class="panel-sub">VAT 제외 · 전체 매체 합산</div></div><div class="legend" id="spendLegend"></div></div><div class="chart-wrap" id="spendChart"></div></article>
+  <article class="card panel"><div class="panel-head"><div><div class="panel-title">주간 구매완료 매출</div><div class="panel-sub">네이버 원금액 기준</div></div></div><div class="bar-chart" id="weekChart"></div></article>
+</section>
+<section class="card table-panel">
+  <div class="panel-head"><div><div class="panel-title">매체별 성과</div><div class="panel-sub" id="tableSub"></div></div><div class="pill blue">구매완료 기준</div></div>
+  <table class="table"><thead><tr><th>매체</th><th>소진금액</th><th>구매완료</th><th>구매완료 매출</th><th>ROAS</th></tr></thead><tbody id="channelTable"></tbody></table>
+</section>
+<div class="insight blue"><div><strong style="display:block;margin-bottom:3px">광고 인사이트</strong><span id="adInsight"></span></div></div>
+
+<div class="section-label alt"><div class="dot"></div><h2>자사몰 유입·구매 (GA4 · shop.imuz.com)</h2></div>
+<div class="section-note">네이버 광고 대부분은 네이버 스마트스토어로 연결되어 이 수치에 포함되지 않습니다. 아래는 자사몰(shop.imuz.com) 세션만 집계한 GA4 수치입니다.</div>
+<section class="kpis" id="ga4Kpis"></section>
+<section class="grid">
+  <article class="card panel"><div class="panel-head"><div><div class="panel-title">주간 세션·구매</div><div class="panel-sub">GA4 세션수 / 구매 매출</div></div></div><div class="bar-chart" id="ga4WeekChart"></div></article>
+  <article class="card panel table-panel" style="padding:15px"><div class="panel-head"><div><div class="panel-title">세션 소스/매체 Top 6</div><div class="panel-sub">10/26~11/22 전체 기간 기준</div></div><div class="pill teal">GA4</div></div>
+    <table class="table"><thead><tr><th>채널</th><th>세션</th><th>구매</th><th>매출</th></tr></thead><tbody id="ga4ChannelTable"></tbody></table>
+  </article>
+</section>
+<div class="insight teal"><div><strong style="display:block;margin-bottom:3px">자사몰 인사이트</strong><span id="ga4Insight"></span></div></div>
+
+<footer class="foot"><span>Source: 주간_광고리포트 시트 + GA4(imuz.com 아이뮤즈, a115114957p396615055)</span><span>생성: 2026.11.23 · 광고비·GA4 합계 교차 검증 완료</span></footer>
+</div>
+<script>
+const DAILY=[['10/26',760712],['10/27',842385],['10/28',1008787],['10/29',919859],['10/30',873472],['10/31',903365],['11/1',855032],['11/2',917995],['11/3',958223],['11/4',931900],['11/5',951260],['11/6',910126],['11/7',900008],['11/8',915007],['11/9',900099],['11/10',895393],['11/11',896758],['11/12',846648],['11/13',880969],['11/14',870208],['11/15',915611],['11/16',370279],['11/17',347835],['11/18',347621],['11/19',360546],['11/20',372051],['11/21',426622],['11/22',431059]];
+const WEEKS=[
+ {id:'w1',label:'10/26~11/1',spend:6163612,revenue:57437630,orders:274,range:[0,7]},
+ {id:'w2',label:'11/2~11/8',spend:6484519,revenue:83396130,orders:427,range:[7,14]},
+ {id:'w3',label:'11/9~11/15',spend:6205686,revenue:43810705,orders:243,range:[14,21]},
+ {id:'w4',label:'11/16~11/22',spend:2656013,revenue:28937260,orders:166,range:[21,28]}
+];
+const TOTAL={spend:21509830,revenue:213581725,roas:9.929493863968242};
+const CHANNELS_W4=[
+ {name:'네이버 아이뮤즈',spend:1992988,orders:140,revenue:21896660,roas:10.99,known:true},
+ {name:'네이버 루트웨이',spend:663025,orders:26,revenue:7040600,roas:10.62,known:true},
+ {name:'META / GDN / 카카오',spend:null,orders:null,revenue:null,roas:null,known:false}
+];
+const GA4_WEEKS=[
+ {id:'w1',sessions:6548,purchases:39,revenue:13732900},
+ {id:'w2',sessions:5544,purchases:25,revenue:4411150},
+ {id:'w3',sessions:6123,purchases:32,revenue:6667190},
+ {id:'w4',sessions:5589,purchases:38,revenue:3474160}
+];
+const GA4_TOTAL={sessions:23875,purchases:134,revenue:28285400};
+const GA4_CHANNELS=[
+ {name:'Organic Search',sessions:10379,purchases:44,revenue:10934200},
+ {name:'Direct',sessions:6046,purchases:67,revenue:14661250},
+ {name:'Display',sessions:4701,purchases:0,revenue:0},
+ {name:'Referral',sessions:409,purchases:12,revenue:1901650},
+ {name:'Unassigned',sessions:556,purchases:10,revenue:788300},
+ {name:'기타(AI Assistant·Paid·Social 등)',sessions:23875-10379-6046-4701-409-556,purchases:134-44-67-0-12-10,revenue:28285400-10934200-14661250-0-1901650-788300}
+];
+const money=n=>n==null?'확인 불가':new Intl.NumberFormat('ko-KR').format(Math.round(n))+'원';
+const compact=n=>n==null?'확인 불가':n>=100000000?(n/100000000).toFixed(2)+'억':n>=10000?(n/10000).toFixed(0)+'만':new Intl.NumberFormat('ko-KR').format(Math.round(n));
+const num=n=>n==null?'확인 불가':new Intl.NumberFormat('ko-KR').format(Math.round(n));
+const xr=n=>n==null?'확인 불가':n.toFixed(2)+'x';
+const pct2=n=>n==null?'확인 불가':(n*100).toFixed(2)+'%';
+function selPeriod(){return document.getElementById('periodSelect').value}
+function currentWeek(){return WEEKS.find(w=>w.id===selPeriod())}
+function currentGa4Week(){return GA4_WEEKS.find(w=>w.id===selPeriod())}
+function adKpiForSelection(){
+ const p=selPeriod();
+ if(p==='all')return {spend:TOTAL.spend,revenue:TOTAL.revenue,roas:TOTAL.roas,orders:WEEKS.reduce((a,w)=>a+w.orders,0)};
+ const w=currentWeek();
+ return {spend:w.spend,revenue:w.revenue,roas:w.spend?w.revenue/w.spend:null,orders:w.orders};
+}
+function ga4KpiForSelection(){
+ const p=selPeriod();
+ if(p==='all')return GA4_TOTAL;
+ const w=currentGa4Week();
+ return {sessions:w.sessions,purchases:w.purchases,revenue:w.revenue};
+}
+function renderAdKpis(){
+ const k=adKpiForSelection();
+ const items=[['소진금액',money(k.spend),'VAT 제외'],['구매완료 건수',num(k.orders),'네이버 구매완료 전환'],['구매완료 매출',money(k.revenue),'네이버 원금액 기준'],['구매완료 ROAS',xr(k.roas),'매출 ÷ 소진금액']];
+ document.getElementById('adKpis').innerHTML=items.map(a=>'<div class="card kpi"><div class="kpi-label">'+a[0]+'</div><div class="kpi-value">'+a[1]+'</div><div class="kpi-meta">'+a[2]+'</div></div>').join('');
+}
+function renderGa4Kpis(){
+ const k=ga4KpiForSelection();
+ const conv=k.sessions?k.purchases/k.sessions:null;
+ const items=[['세션수(자사몰)',num(k.sessions),'GA4 세션 기준'],['구매(자사몰)',num(k.purchases),'GA4 purchase 이벤트'],['구매 매출(자사몰)',money(k.revenue),'GA4 총수익'],['세션당 구매율',pct2(conv),'구매 ÷ 세션']];
+ document.getElementById('ga4Kpis').innerHTML=items.map(a=>'<div class="card kpi"><div class="kpi-label">'+a[0]+'</div><div class="kpi-value">'+a[1]+'</div><div class="kpi-meta">'+a[2]+'</div></div>').join('');
+}
+function renderSpend(){
+ const p=selPeriod();
+ const rows=p==='all'?DAILY:DAILY.slice(currentWeek().range[0],currentWeek().range[1]);
+ const vals=rows.map(r=>r[1]),labels=rows.map(r=>r[0]),max=Math.max(...vals),w=560,h=170,pad={l:6,r:6,t:14,b:22};
+ const pts=vals.map((v,i)=>{const px=pad.l+(i/(Math.max(1,vals.length-1)))*(w-pad.l-pad.r);const py=pad.t+(1-v/max)*(h-pad.t-pad.b);return [px,py]});
+ const line=pts.map(a=>a.join(',')).join(' ');
+ const area=line+' '+(w-pad.r)+','+(h-pad.b)+' '+pad.l+','+(h-pad.b);
+ document.getElementById('spendChart').innerHTML='<svg viewBox="0 0 '+w+' '+h+'"><defs><linearGradient id="areaFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#3f72ff" stop-opacity=".2"/><stop offset="100%" stop-color="#3f72ff" stop-opacity="0"/></linearGradient></defs><line class="gridline" x1="6" x2="554" y1="92" y2="92"/><polygon class="area" points="'+area+'"/><polyline class="line blue" points="'+line+'"/>'+pts.map((a,i)=>'<circle class="dot-pt blue" style="stroke:#3f72ff" cx="'+a[0]+'" cy="'+a[1]+'" r="2.6"><title>'+labels[i]+' · '+money(vals[i])+'</title></circle>').join('')+labels.map((lab,i)=>{if(labels.length>10&&i%3!==0&&i!==labels.length-1)return '';return '<text class="axis" x="'+pts[i][0]+'" y="164" text-anchor="middle">'+lab+'</text>'}).join('')+'</svg>';
+ document.getElementById('spendLegend').textContent='합계 '+money(vals.reduce((a,b)=>a+b,0));
+}
+function renderWeeks(){
+ const max=Math.max(...WEEKS.map(w=>w.revenue));
+ document.getElementById('weekChart').innerHTML=WEEKS.map(w=>'<div class="bar-col"><div class="bar-value">'+compact(w.revenue)+'</div><div class="bar-sub">'+num(w.orders)+'건</div><div class="bar blue" style="height:'+Math.max(6,w.revenue/max*120)+'px"></div><div class="bar-label">'+w.label+'</div></div>').join('');
+}
+function renderChannels(){
+ const p=selPeriod();
+ document.getElementById('tableSub').textContent=(p==='w4'||p==='all')?'네이버 확정 매체 · 2026.11.16~11.22 기준':'해당 주차 매체별 분해는 다음 업데이트에서 보완 예정';
+ if(p==='w4'||p==='all'){
+  document.getElementById('channelTable').innerHTML=CHANNELS_W4.map(c=>'<tr class="'+(c.known?'':'muted-row')+'"><td class="media-name">'+c.name+'</td><td>'+money(c.spend)+'</td><td>'+(c.orders==null?'확인 불가':num(c.orders)+'건')+'</td><td>'+money(c.revenue)+'</td><td>'+xr(c.roas)+'</td></tr>').join('');
+ }else{
+  document.getElementById('channelTable').innerHTML='<tr class="muted-row"><td colspan="5">선택한 주차의 매체별 분해 데이터는 원자료 재확인 후 반영 예정입니다.</td></tr>';
+ }
+}
+function renderGa4Weeks(){
+ const max=Math.max(...GA4_WEEKS.map(w=>w.revenue));
+ document.getElementById('ga4WeekChart').innerHTML=GA4_WEEKS.map(w=>'<div class="bar-col"><div class="bar-value">'+compact(w.revenue)+'</div><div class="bar-sub">'+num(w.sessions)+'세션·'+num(w.purchases)+'건</div><div class="bar teal" style="height:'+Math.max(6,w.revenue/max*120)+'px"></div><div class="bar-label">'+WEEKS.find(x=>x.id===w.id).label+'</div></div>').join('');
+}
+function renderGa4Channels(){
+ document.getElementById('ga4ChannelTable').innerHTML=GA4_CHANNELS.map(c=>'<tr><td class="media-name">'+c.name+'</td><td>'+num(c.sessions)+'</td><td>'+num(c.purchases)+'</td><td>'+money(c.revenue)+'</td></tr>').join('');
+}
+function renderInsights(){
+ const p=selPeriod();
+ if(p==='all'){
+  document.getElementById('adInsight').textContent='10/26~11/22 전체 구매완료 매출은 '+money(TOTAL.revenue)+'이며, 매출이 가장 컸던 주는 11/2~11/8('+money(83396130)+')입니다.';
+  document.getElementById('ga4Insight').textContent='같은 기간 자사몰(GA4) 세션은 '+num(GA4_TOTAL.sessions)+'회, 구매 '+num(GA4_TOTAL.purchases)+'건, 매출 '+money(GA4_TOTAL.revenue)+'입니다. Direct 채널 매출이 '+money(14661250)+'로 가장 크고, Organic Search가 세션 '+num(10379)+'회로 가장 많습니다.';
+ }else{
+  const w=currentWeek(),g=currentGa4Week();
+  document.getElementById('adInsight').textContent=w.label+' 구매완료 매출은 '+money(w.revenue)+', ROAS '+xr(w.revenue/w.spend)+'입니다.';
+  document.getElementById('ga4Insight').textContent=w.label+' 자사몰 세션 '+num(g.sessions)+'회 중 구매 '+num(g.purchases)+'건, 매출 '+money(g.revenue)+'입니다.';
+ }
+}
+function render(){
+ renderAdKpis();renderSpend();renderWeeks();renderChannels();
+ renderGa4Kpis();renderGa4Weeks();renderGa4Channels();
+ renderInsights();
+ document.getElementById('filterStatus').textContent='현재 선택 · '+(selPeriod()==='all'?'전체 · 10/26~11/22':currentWeek().label);
+}
+document.getElementById('periodSelect').addEventListener('change',render);
+render();
+</script>
+</body></html>
