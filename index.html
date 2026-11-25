@@ -304,8 +304,8 @@ function renderGa4Daily(){
  const pts=vals.map((v,i)=>{const px=pad.l+(i/(vals.length-1))*(w-pad.l-pad.r);const py=pad.t+(1-v/max)*(h-pad.t-pad.b);return [px,py]});
  const line=pts.map(a=>a.join(',')).join(' ');
  const area=line+' '+(w-pad.r)+','+(h-pad.b)+' '+pad.l+','+(h-pad.b);
- const labels=GA4_DAILY.map(d=>d.date);
- document.getElementById('ga4DailyChart').innerHTML='<svg viewBox="0 0 '+w+' '+h+'"><defs><linearGradient id="areaFill2" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0ea8a0" stop-opacity=".2"/><stop offset="100%" stop-color="#0ea8a0" stop-opacity="0"/></linearGradient></defs><line class="gridline" x1="6" x2="634" y1="92" y2="92"/><polygon class="area2" points="'+area+'"/><polyline class="line teal" points="'+line+'"/>'+pts.map((a,i)=>'<circle class="dot-pt teal" style="stroke:#0ea8a0" cx="'+a[0]+'" cy="'+a[1]+'" r="2.4"><title>'+labels[i]+' · 세션 '+num(vals[i])+' · 매출 '+money(GA4_DAILY[i].revenue)+'</title></circle>').join('')+labels.map((lab,i)=>{if(i%4!==0&&i!==labels.length-1)return '';return '<text class="axis" x="'+pts[i][0]+'" y="164" text-anchor="middle">'+lab+'</text>'}).join('')+'</svg>';
+ const labels=GA4_DAILY.map(d=>d.date),labelEvery=Math.ceil(labels.length/7);
+ document.getElementById('ga4DailyChart').innerHTML='<svg viewBox="0 0 '+w+' '+h+'"><defs><linearGradient id="areaFill2" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0ea8a0" stop-opacity=".2"/><stop offset="100%" stop-color="#0ea8a0" stop-opacity="0"/></linearGradient></defs><line class="gridline" x1="6" x2="634" y1="92" y2="92"/><polygon class="area2" points="'+area+'"/><polyline class="line teal" points="'+line+'"/>'+pts.map((a,i)=>'<circle class="dot-pt teal" style="stroke:#0ea8a0" cx="'+a[0]+'" cy="'+a[1]+'" r="2.4"><title>'+labels[i]+' · 세션 '+num(vals[i])+' · 매출 '+money(GA4_DAILY[i].revenue)+'</title></circle>').join('')+labels.map((lab,i)=>{if(i%labelEvery!==0&&i!==labels.length-1)return '';return '<text class="axis" x="'+pts[i][0]+'" y="164" text-anchor="middle">'+lab+'</text>'}).join('')+'</svg>';
 }
 function renderGa4Weeks(){
  const max=Math.max(...GA4_WEEKS.map(w=>w.revenue));
