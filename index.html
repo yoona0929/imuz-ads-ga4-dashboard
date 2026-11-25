@@ -134,7 +134,7 @@
 
 <section id="panel-ga4" class="hidden">
 <div class="section-label alt"><div class="dot"></div><h2>자사몰 유입·구매 (GA4 · shop.imuz.com)</h2></div>
-<div class="section-note">네이버 광고 대부분은 네이버 스마트스토어로 연결되어 아래 자사몰(shop.imuz.com) GA4에는 포함되지 않습니다. GA4 기준기간: 10/26~11/24. 세션은 GA4 직접 조회 총계를 사용했으며, 날짜·채널·기기별 분해 합계와 차이가 있을 수 있습니다.</div>
+<div class="section-note">네이버 광고 대부분은 네이버 스마트스토어로 연결되어 아래 자사몰(shop.imuz.com) GA4에는 포함되지 않습니다. GA4 KPI 기준기간: <span id="ga4PeriodText">10/26~11/24</span>. 기간 선택은 KPI·인사이트에 적용되며, 일별 추이·채널·기기 분해는 전체기간 10/26~11/24입니다. 세션은 GA4 직접 조회 총계로 표시하고, 분해 합계와 차이가 있을 수 있습니다.</div>
 <section class="kpis" id="ga4Kpis"></section>
 <section class="grid">
   <article class="card panel"><div class="panel-head"><div><div class="panel-title">일별 세션·매출 추이</div><div class="panel-sub">GA4 세션수 / 구매 매출</div></div></div><div class="chart-wrap" id="ga4DailyChart"></div></article>
@@ -243,10 +243,12 @@ function renderChannels(){
 function renderInsights(){
  const p=selPeriod();
  if(p==='all'){
+  document.getElementById('ga4PeriodText').textContent='10/26~11/24';
   document.getElementById('mediaInsight').textContent='10/26~11/22 전체 구매완료 매출은 '+money(TOTAL.revenue)+'이며, 매출이 가장 컸던 주는 11/2~11/8('+money(83396130)+')입니다.';
   document.getElementById('ga4Insight').textContent='10/26~11/24 GA4 직접 조회 기준, 자사몰 세션은 '+num(GA4_TOTAL.sessions)+'회, 구매 '+num(GA4_TOTAL.purchases)+'건, 매출 '+money(GA4_TOTAL.revenue)+'입니다. Direct 매출은 '+money(15138150)+'로 가장 크고, mobile 세션은 '+num(16201)+'회로 가장 많으며 desktop 매출은 '+money(23311900)+'입니다.';
  }else{
   const w=currentWeek(),g=currentGa4Week();
+  document.getElementById('ga4PeriodText').textContent=g.label;
   document.getElementById('mediaInsight').textContent=w.label+' 구매완료 매출은 '+money(w.revenue)+', ROAS '+xr(w.revenue/w.spend)+'입니다.';
   document.getElementById('ga4Insight').textContent=w.label+' 자사몰 세션 '+num(g.sessions)+'회 중 구매 '+num(g.purchases)+'건, 매출 '+money(g.revenue)+'입니다.';
  }
