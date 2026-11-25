@@ -26,6 +26,7 @@
 .section-label h2{font-size:14px;margin:0;letter-spacing:-.01em}
 .section-note{color:var(--muted);font-size:11.5px;margin:-4px 0 12px 15px}
 .kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:14px}
+.ga4-kpis{grid-template-columns:repeat(3,minmax(0,1fr))}.source-panel{grid-column:1/-1}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
 .kpi{padding:14px 14px 12px}
 .kpi-label{color:var(--muted);font-size:10.5px;font-weight:650}
@@ -73,7 +74,7 @@
 .devbars{display:flex;gap:14px;align-items:end;height:150px;padding:10px 4px 20px}
 .devcol{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:end;gap:6px}
 .devbar{width:56%;background:var(--teal);border-radius:5px 5px 2px 2px;min-width:20px}
-@media(max-width:620px){.kpis{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.filter-status{margin-left:0;width:100%}}
+@media(max-width:620px){.kpis{grid-template-columns:repeat(2,1fr)}.ga4-kpis{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.filter-status{margin-left:0;width:100%}}
 </style>
 </head>
 <body>
@@ -134,8 +135,8 @@
 
 <section id="panel-ga4" class="hidden">
 <div class="section-label alt"><div class="dot"></div><h2>자사몰 유입·구매 (GA4 · shop.imuz.com)</h2></div>
-<div class="section-note">네이버 광고 대부분은 네이버 스마트스토어로 연결되어 아래 자사몰(shop.imuz.com) GA4에는 포함되지 않습니다. GA4 KPI 기준기간: <span id="ga4PeriodText">10/26~11/24</span>. 기간 선택은 KPI·인사이트에 적용되며, 일별 추이·채널·기기 분해는 전체기간 10/26~11/24입니다. 세션은 GA4 직접 조회 총계로 표시하고, 분해 합계와 차이가 있을 수 있습니다.</div>
-<section class="kpis" id="ga4Kpis"></section>
+<div class="section-note">네이버 광고 대부분은 네이버 스마트스토어로 연결되어 아래 자사몰(shop.imuz.com) GA4에는 포함되지 않습니다. GA4 KPI 기준기간: <span id="ga4PeriodText">10/26~11/24</span>. 기간 선택은 세션·구매·매출 KPI와 인사이트에 적용됩니다. 평균 참여시간·이탈률, 일별 추이·채널·기기·유입경로 분해는 전체기간 10/26~11/24 고정입니다. 세션은 GA4 직접 조회 총계로 표시하고, 분해 합계와 차이가 있을 수 있습니다.</div>
+<section class="kpis ga4-kpis" id="ga4Kpis"></section>
 <section class="grid">
   <article class="card panel"><div class="panel-head"><div><div class="panel-title">일별 세션·매출 추이</div><div class="panel-sub">GA4 세션수 / 구매 매출</div></div></div><div class="chart-wrap" id="ga4DailyChart"></div></article>
   <article class="card panel"><div class="panel-head"><div><div class="panel-title">주간·최신 기간 세션·구매</div><div class="panel-sub">GA4 세션수 / 구매 매출 · 최신 기간은 11/23~11/24 (2일)</div></div></div><div class="bar-chart" id="ga4WeekChart"></div></article>
@@ -151,6 +152,15 @@
   <article class="card panel">
     <div class="panel-head"><div><div class="panel-title">기기별 세션·매출</div><div class="panel-sub">desktop / mobile / tablet · 10/26~11/24</div></div></div>
     <div class="devbars" id="devBars"></div>
+  </article>
+</section>
+<section class="grid">
+  <article class="card table-panel source-panel">
+    <div class="panel-head"><div><div class="panel-title">유입 경로: 세션 소스/매체</div><div class="panel-sub" id="ga4SourceMeta">세션수 기준 상위 10개</div></div><div class="pill teal">GA4</div></div>
+    <table class="table" id="ga4SourceTable">
+      <thead><tr><th>세션 소스/매체</th><th>세션</th><th>비중</th><th>평균 참여 시간(세션당)</th><th>구매</th><th>매출</th></tr></thead>
+      <tbody id="ga4SourceBody"></tbody>
+    </table>
   </article>
 </section>
 <div class="insight teal"><div><strong style="display:block;margin-bottom:3px">자사몰 인사이트</strong><span id="ga4Insight"></span></div></div>
@@ -181,7 +191,9 @@ const GA4_WEEKS=[
  {id:'w5',label:'11/23~11/24',sessions:2265,purchases:20,revenue:7409200}
 ];
 const GA4_TOTAL={sessions:26257,purchases:154,revenue:35694600};
+const GA4_ENGAGEMENT={averageSession:"1분 12초",engagementRate:0.7398};
 const GA4_CHANNELS=[{"name":"Organic Search","sessions":11217,"purchases":49,"revenue":17569500},{"name":"Direct","sessions":6811,"purchases":79,"revenue":15138150},{"name":"Display","sessions":5080,"purchases":0,"revenue":0},{"name":"Unassigned","sessions":573,"purchases":10,"revenue":788300},{"name":"AI Assistant","sessions":551,"purchases":1,"revenue":0},{"name":"Referral","sessions":451,"purchases":12,"revenue":1901650},{"name":"Paid Social","sessions":396,"purchases":0,"revenue":0},{"name":"Organic Social","sessions":264,"purchases":3,"revenue":297000},{"name":"Organic Shopping","sessions":231,"purchases":0,"revenue":0},{"name":"Paid Search","sessions":193,"purchases":0,"revenue":0},{"name":"Paid Video","sessions":158,"purchases":0,"revenue":0},{"name":"Cross-network","sessions":136,"purchases":0,"revenue":0},{"name":"Organic Video","sessions":41,"purchases":0,"revenue":0}];
+const GA4_SOURCES=[{"name":"(direct) / (none)","sessions":6811,"averageSession":"1분 03초","purchases":79,"revenue":15138150},{"name":"google / cpc","sessions":4411,"averageSession":"4초","purchases":0,"revenue":0},{"name":"m.search.naver.com / referral","sessions":4197,"averageSession":"2분 05초","purchases":12,"revenue":7287900},{"name":"google / organic","sessions":3520,"averageSession":"1분 28초","purchases":11,"revenue":2210000},{"name":"naver / organic","sessions":3082,"averageSession":"2분 03초","purchases":21,"revenue":7330600},{"name":"Meta / display","sessions":705,"averageSession":"32초","purchases":0,"revenue":0},{"name":"chatgpt.com / ai-assistant","sessions":527,"averageSession":"1분 04초","purchases":1,"revenue":0},{"name":"Camping / sell","sessions":482,"averageSession":"1분 09초","purchases":10,"revenue":788300},{"name":"ig / paid","sessions":396,"averageSession":"17초","purchases":0,"revenue":0},{"name":"google / display","sessions":345,"averageSession":"4초","purchases":0,"revenue":0}];
 const GA4_DAILY=[{"date":"10/26","sessions":850,"revenue":3572900},{"date":"10/27","sessions":1170,"revenue":1183900},{"date":"10/28","sessions":920,"revenue":737000},{"date":"10/29","sessions":1296,"revenue":7251700},{"date":"10/30","sessions":928,"revenue":401600},{"date":"10/31","sessions":606,"revenue":579900},{"date":"11/1","sessions":678,"revenue":5900},{"date":"11/2","sessions":932,"revenue":1401500},{"date":"11/3","sessions":939,"revenue":823080},{"date":"11/4","sessions":869,"revenue":257860},{"date":"11/5","sessions":819,"revenue":575610},{"date":"11/6","sessions":757,"revenue":1257900},{"date":"11/7","sessions":592,"revenue":79300},{"date":"11/8","sessions":681,"revenue":15900},{"date":"11/9","sessions":934,"revenue":875850},{"date":"11/10","sessions":893,"revenue":1108780},{"date":"11/11","sessions":922,"revenue":412860},{"date":"11/12","sessions":933,"revenue":1085900},{"date":"11/13","sessions":935,"revenue":504700},{"date":"11/14","sessions":785,"revenue":2055700},{"date":"11/15","sessions":797,"revenue":623400},{"date":"11/16","sessions":908,"revenue":138700},{"date":"11/17","sessions":955,"revenue":1587400},{"date":"11/18","sessions":816,"revenue":670860},{"date":"11/19","sessions":881,"revenue":724700},{"date":"11/20","sessions":845,"revenue":328700},{"date":"11/21","sessions":564,"revenue":23800},{"date":"11/22","sessions":682,"revenue":0},{"date":"11/23","sessions":1155,"revenue":640100},{"date":"11/24","sessions":1124,"revenue":6769100}];
 const GA4_DEVICES=[{"name":"desktop","sessions":9491,"revenue":23311900},{"name":"mobile","sessions":16201,"revenue":12372800},{"name":"tablet","sessions":423,"revenue":9900}];
 
@@ -245,7 +257,7 @@ function renderInsights(){
  if(p==='all'){
   document.getElementById('ga4PeriodText').textContent='10/26~11/24';
   document.getElementById('mediaInsight').textContent='10/26~11/22 전체 구매완료 매출은 '+money(TOTAL.revenue)+'이며, 매출이 가장 컸던 주는 11/2~11/8('+money(83396130)+')입니다.';
-  document.getElementById('ga4Insight').textContent='10/26~11/24 GA4 직접 조회 기준, 자사몰 세션은 '+num(GA4_TOTAL.sessions)+'회, 구매 '+num(GA4_TOTAL.purchases)+'건, 매출 '+money(GA4_TOTAL.revenue)+'입니다. Direct 매출은 '+money(15138150)+'로 가장 크고, mobile 세션은 '+num(16201)+'회로 가장 많으며 desktop 매출은 '+money(23311900)+'입니다.';
+  document.getElementById('ga4Insight').textContent='10/26~11/24 GA4 직접 조회 기준, 자사몰 세션은 '+num(GA4_TOTAL.sessions)+'회, 구매 '+num(GA4_TOTAL.purchases)+'건, 매출 '+money(GA4_TOTAL.revenue)+'입니다. 평균 참여 시간(세션당)은 '+GA4_ENGAGEMENT.averageSession+', 이탈률은 '+pct2(1-GA4_ENGAGEMENT.engagementRate)+'입니다. Direct 매출은 '+money(15138150)+'로 가장 크고, mobile 세션은 '+num(16201)+'회로 가장 많으며 desktop 매출은 '+money(23311900)+'입니다.';
  }else{
   const w=currentWeek(),g=currentGa4Week();
   document.getElementById('ga4PeriodText').textContent=g.label;
@@ -295,7 +307,7 @@ function renderGa4Kpis(){
  const p=selPeriod();
  const k=p==='all'?GA4_TOTAL:(()=>{const w=currentGa4Week();return {sessions:w.sessions,purchases:w.purchases,revenue:w.revenue};})();
  const conv=k.sessions?k.purchases/k.sessions:null;
- const items=[['세션수(자사몰)',num(k.sessions),'GA4 세션 기준'],['구매(자사몰)',num(k.purchases),'GA4 purchase 이벤트'],['구매 매출(자사몰)',money(k.revenue),'GA4 총수익'],['세션당 구매율',pct2(conv),'구매 ÷ 세션']];
+ const items=[['세션수(자사몰)',num(k.sessions),'GA4 세션 기준'],['구매(자사몰)',num(k.purchases),'GA4 purchase 이벤트'],['구매 매출(자사몰)',money(k.revenue),'GA4 총수익'],['세션당 구매율',pct2(conv),'구매 ÷ 세션'],['평균 참여 시간(세션당)',GA4_ENGAGEMENT.averageSession,'GA4 전체기간 10/26~11/24'],['이탈률',pct2(1-GA4_ENGAGEMENT.engagementRate),'참여율 73.98%의 보완값 · 전체기간']];
  document.getElementById('ga4Kpis').innerHTML=items.map(a=>'<div class="card kpi"><div class="kpi-label">'+a[0]+'</div><div class="kpi-value">'+a[1]+'</div><div class="kpi-meta">'+a[2]+'</div></div>').join('');
 }
 function renderGa4Daily(){
@@ -334,6 +346,11 @@ document.querySelectorAll('#ga4ChTable th').forEach(th=>{
    renderGa4ChTable();
  });
 });
+function renderGa4Sources(){
+ const topSessions=GA4_SOURCES.reduce((sum,s)=>sum+s.sessions,0);
+ document.getElementById('ga4SourceMeta').textContent='세션수 기준 상위 10개 · 전체 98개 소스/매체 중 · 합계 '+num(topSessions)+'회 ('+pct2(topSessions/GA4_TOTAL.sessions)+') · 10/26~11/24';
+ document.getElementById('ga4SourceBody').innerHTML=GA4_SOURCES.map(s=>'<tr><td class="media-name">'+s.name+'</td><td>'+num(s.sessions)+'</td><td>'+pct2(s.sessions/GA4_TOTAL.sessions)+'</td><td>'+s.averageSession+'</td><td>'+num(s.purchases)+'</td><td>'+money(s.revenue)+'</td></tr>').join('');
+}
 function renderDevices(){
  const max=Math.max(...GA4_DEVICES.map(d=>d.sessions));
  document.getElementById('devBars').innerHTML=GA4_DEVICES.map(d=>'<div class="devcol"><div class="bar-value">'+num(d.sessions)+'</div><div class="devbar" style="height:'+Math.max(6,d.sessions/max*110)+'px"></div><div class="bar-label">'+d.name+'</div><div class="bar-sub">'+money(d.revenue)+'</div></div>').join('');
@@ -341,7 +358,7 @@ function renderDevices(){
 
 function renderAll(){
  renderAdKpis();renderSpend();renderWeeks();renderChannels();
- renderGa4Kpis();
+ renderGa4Kpis();renderGa4Sources();
  renderInsights();
  document.getElementById('filterStatus').textContent='현재 선택 · '+(selPeriod()==='all'?'전체 · 10/26~11/22':currentWeek().label);
 }
